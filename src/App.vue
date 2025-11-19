@@ -1,8 +1,13 @@
 <script setup>
 import { reactive } from 'vue';
+import Header from './components/Cabecalho.vue';
+import Form from './components/Formulario.vue';
+import Lista from './components/Lista.vue';
+import Formulario from './components/Formulario.vue';
+import Cabecalho from './components/Cabecalho.vue';
 
 const estado = reactive({
-  filtro: 'todas',
+  filtro: 'todas',    
   tarefaTemp: '',
   tarefas: [
     { id: 1, descricao: 'Estudar Vue.js', concluida: false },
@@ -46,48 +51,11 @@ const cadastraTarefa = () => {
 
 <template>
 <div class="container">
-  <header class="p-5 mb-4 mt-4 bg-dark text-white rounded-3">
-    <h1>Minhas tarefas</h1>
-    <p>
-      você possui {{ getTarefasPendentes().length }} tarefas pendentes
-    </p>
-  </header>
+  <Cabecalho :tarefas-pendentes="getTarefasPendentes().length" />
+  <Formulario :trocar-filtro="evento => estado.filtro = evento.target.value" :tarefa-temp="estado.tarefaTemp" :edita-tarefa-temp="evento => estado.tarefaTemp = evento.targe.value" :cadastra-tarefas="cadastraTarefa" />
+  <Lista :tarefas="getTarefasFiltradas()"/>
 
-  <form @submit.prevent="cadastraTarefa">
-    <div class="row">
-      <div class="col mb-2">
-        <input :value="estado.tarefaTemp" @change="evento => estado.tarefaTemp = evento.target.value" required type="text" class="form-control" placeholder="Adicione uma nova tarefa" />
-      </div>
-      <div class="col-md-1 mb-2">
-        <button type="submit" class="btn btn-primary">Adicionar</button>
-      </div>
-      <div class="col-md-2">
-        <select  @change="evento => estado.filtro = evento.target.value" class="form-select">
-          <option value="todas">Todas</option>
-          <option value="pendentes">Pendentes</option>
-          <option value="concluidas">Concluídas</option>
-        </select>
-      </div>
-    </div>
-  </form>
-  <ul class="list-group mt-4">
-    <li class="list-group-item" v-for="tarefa in getTarefasFiltradas()">
-      <input @change="evento => tarefa.concluida = evento.target.checked" :checked="tarefa.concluida" type="checkbox" name="" :id="tarefa.id" />
-      <label :class="{done: tarefa.concluida }" class="ms-3" :for="tarefa.id">
-        {{ tarefa.descricao }}
-      </label>
-    </li>
-  </ul>
+
 </div>
 </template>
 
-<style scoped>
-.container {
-  max-width: 600px;
-}
-
-.done {
-  text-decoration: line-through;
-  color: gray;
-}
-</style>
