@@ -1,7 +1,5 @@
 <script setup>
 import { reactive } from 'vue';
-import Header from './components/Cabecalho.vue';
-import Form from './components/Formulario.vue';
 import Lista from './components/Lista.vue';
 import Formulario from './components/Formulario.vue';
 import Cabecalho from './components/Cabecalho.vue';
@@ -40,8 +38,12 @@ const getTarefasFiltradas = () => {
 }
 
 const cadastraTarefa = () => {
+  const descricao = estado.tarefaTemp.trim();
+  if (!descricao) return; // evita tarefa sem nome
+  const novoId = estado.tarefas.length ? Math.max(...estado.tarefas.map(t => t.id)) + 1 : 1;
   const tarefaNova = {
-    descricao: estado.tarefaTemp,
+    id: novoId,
+    descricao,
     concluida: false,
   }
   estado.tarefas.push(tarefaNova)
@@ -52,7 +54,12 @@ const cadastraTarefa = () => {
 <template>
 <div class="container">
   <Cabecalho :tarefas-pendentes="getTarefasPendentes().length" />
-  <Formulario :trocar-filtro="evento => estado.filtro = evento.target.value" :tarefa-temp="estado.tarefaTemp" :edita-tarefa-temp="evento => estado.tarefaTemp = evento.targe.value" :cadastra-tarefas="cadastraTarefa" />
+  <Formulario
+    :trocar-filtro="evento => estado.filtro = evento.target.value"
+    :tarefa-temp="estado.tarefaTemp"
+    :edita-tarefa-temp="valor => estado.tarefaTemp = valor"
+    :cadastra-tarefas="cadastraTarefa"
+  />
   <Lista :tarefas="getTarefasFiltradas()"/>
 
 

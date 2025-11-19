@@ -6,7 +6,14 @@
     <form @submit.prevent="props.cadastraTarefas">
     <div class="row">
         <div class="col mb-2">
-        <input :value="props.tarefaTemp" @change="evento => props.editaTarefaTemp = evento.target.value" required type="text" class="form-control" placeholder="Adicione uma nova tarefa" />
+        <input
+            :value="props.tarefaTemp"
+            @input="evento => props.editaTarefaTemp(evento.target.value)"
+            required
+            type="text"
+            class="form-control"
+            placeholder="Adicione uma nova tarefa"
+        />
         </div>
         <div class="col-md-1 mb-2">
         <button type="submit" class="btn btn-primary">Adicionar</button>
