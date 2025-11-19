@@ -4,7 +4,7 @@ const props = defineProps (['tarefas'])
 
 <template>
     <p v-if="props.tarefas.length === 0">
-        Nenhuma tarefa {{ props.tarefas.length === 0 ? 'pendente' : 'concluída' }}.
+        Nenhuma tarefa
     </p>
     <ul class="list-group mt-4" v-else>
         <li class="list-group-item" v-for="tarefa in props.tarefas">
